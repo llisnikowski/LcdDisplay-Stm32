@@ -8,6 +8,7 @@
 #ifndef PERIPHERY_PORTANDPIN_HPP_
 #define PERIPHERY_PORTANDPIN_HPP_
 
+#include <stdint.h>
 #include "gpio.h"
 #include "port.hpp"
 
@@ -43,9 +44,8 @@ private:
  * \see Port
  */
 constexpr PortAndPin::PortAndPin(Port port, uint8_t pin)
-	:port(port), pin(pin)
+	:port_(port), pin_(pin & 0x0f)
 {
-	static_assert(pin < 16, "Pin must be less than 16.");
 }
 
 /*!
@@ -62,16 +62,16 @@ constexpr Port PortAndPin::getPort() const
  * \brief Return pin.
  * \return Stored pin.
  */
-constexpr Port getPin() const
+constexpr Port PortAndPin::getPin() const
 {
-	return pin_;
+	return port_;
 }
 
 /*!
  * \brief Return GPIO_TypeDef * for stored port.
  * \return GPIO_TypeDef * for stored port.
  */
-constexpr GPIO_TypeDef * getGPIO() const
+constexpr GPIO_TypeDef * PortAndPin::getGPIO() const
 {
 	return &port_;
 }
