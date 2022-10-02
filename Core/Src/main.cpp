@@ -18,11 +18,14 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "lcdDisplay/lcdDisplay.hpp"
 
 /* USER CODE END Includes */
 
@@ -43,6 +46,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+
+LcdDisplay display({Port::B, 0}, {Port::B, 1}, {Port::A, 4});
 
 /* USER CODE END PV */
 
@@ -86,7 +91,15 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+
+  HAL_TIM_Base_Start(&htim3);
+  display.init();
+  display.clear();
+
+
+  //LCD_Init();
 
   /* USER CODE END 2 */
 
@@ -94,6 +107,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	  display.clear();
+	  display.setCursor(2, 1);
+	  display.print('-');
+	  display.print("lukasz ");
+	  display.printInt(1234);
+	  display.setCursor(0, 0);
+	  display.print("lisnikowski");
+	  HAL_Delay(1000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
